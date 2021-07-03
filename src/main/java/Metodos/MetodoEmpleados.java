@@ -221,26 +221,28 @@ public class MetodoEmpleados {
                     eda = empleados.getNumLegajo();
                     empl = ejpaC.findEmpleados(eda);
                     mayor.add(empl);
+
                 }
             }
+            System.out.println("+-------------------------------------------------------------------------------------------------------------+");
+            System.out.println("|                                              Empleado de mayor edad                                         +");
+            System.out.println("+-------------------------------------------------------------------------------------------------------------+");
+            System.out.println("| Numero de legajo |     Nombre y Apellido    |  Fecha naciimeto  |     DNI    |   Sueldo Basico   |   EDAD   +");
+            System.out.println("+-------------------------------------------------------------------------------------------------------------+");
+            for (int i = 0; i < mayor.size(); i++) {
+                System.out.printf("|        %-8s  |      %-15s     |    %-10s     |  %-8s  |      %-12s |    %-6s|\n",
+                        mayor.get(i).getNumLegajo(),
+                        mayor.get(i).getNombreApellido(),
+                        fna.format(mayor.get(i).getFechaNacimineto()),
+                        mayor.get(i).getDni(),
+                        mayor.get(i).getSueldoBasico(),
+                        calcularEdad(mayor.get(i).getFechaNacimineto()));
+            }
+            System.out.println("+-------------------------------------------------------------------------------------------------------------+");
+
         } catch (Exception e) {
             System.out.println("error: " + e.getMessage());
         }
-        System.out.println("+-------------------------------------------------------------------------------------------------------------+");
-        System.out.println("|                                              Empleado de mayor edad                                         +");
-        System.out.println("+-------------------------------------------------------------------------------------------------------------+");
-        System.out.println("| Numero de legajo |     Nombre y Apellido    |  Fecha naciimeto  |     DNI    |   Sueldo Basico   |   EDAD   +");
-        System.out.println("+-------------------------------------------------------------------------------------------------------------+");
-        for (int i = 0; i < mayor.size(); i++) {
-            System.out.printf("|        %-8s  |      %-15s     |    %-10s     |  %-8s  |      %-12s |    %-6s|\n",
-                    mayor.get(i).getNumLegajo(),
-                    mayor.get(i).getNombreApellido(),
-                    fna.format(mayor.get(i).getFechaNacimineto()),
-                    mayor.get(i).getDni(),
-                    mayor.get(i).getSueldoBasico(),
-                    calcularEdad(mayor.get(i).getFechaNacimineto()));
-        }
-        System.out.println("+-------------------------------------------------------------------------------------------------------------+");
     }
 
     public void ListaEmpleSuel() {
