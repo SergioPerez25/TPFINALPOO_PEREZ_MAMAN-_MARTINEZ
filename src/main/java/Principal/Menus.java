@@ -61,24 +61,26 @@ public class Menus {
             switch (opp) {
                 case 1:
                     me.Insertar();
+                    me.Mostrartodo();
                     break;
                 case 2:
-
+                    me.Eliminar();
+                    me.Mostrartodo();
                     break;
                 case 3:
-
+                    me.Modificar();
                     break;
                 case 4:
-
+                    me.Mostrartodo();
                     break;
                 case 5:
-
+                    me.MayorEdad();
                     break;
                 case 6:
-
+                    me.ListaEmpleSuel();
                     break;
                 case 7:
-
+                    me.Buscar();
                     break;
                 case 8:
                     System.out.println("Saliendo del Administrador de Empleados");

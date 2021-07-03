@@ -25,28 +25,25 @@ import javax.persistence.TemporalType;
 @Table(name = "empleados")
 @NamedQueries({
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e")
-    , @NamedQuery(name = "Empleados.findByDni", query = "SELECT e FROM Empleados e WHERE e.dni = :dni")
-    , @NamedQuery(name = "Empleados.findByNombre", query = "SELECT e FROM Empleados e WHERE e.nombre = :nombre")
-    , @NamedQuery(name = "Empleados.findByApellido", query = "SELECT e FROM Empleados e WHERE e.apellido = :apellido")
-    , @NamedQuery(name = "Empleados.findByFechaNacimineto", query = "SELECT e FROM Empleados e WHERE e.fechaNacimineto = :fechaNacimineto")
     , @NamedQuery(name = "Empleados.findByNumLegajo", query = "SELECT e FROM Empleados e WHERE e.numLegajo = :numLegajo")
+    , @NamedQuery(name = "Empleados.findByNombreApellido", query = "SELECT e FROM Empleados e WHERE e.nombreApellido = :nombreApellido")
+    , @NamedQuery(name = "Empleados.findByFechaNacimineto", query = "SELECT e FROM Empleados e WHERE e.fechaNacimineto = :fechaNacimineto")
+    , @NamedQuery(name = "Empleados.findByDni", query = "SELECT e FROM Empleados e WHERE e.dni = :dni")
     , @NamedQuery(name = "Empleados.findBySueldoBasico", query = "SELECT e FROM Empleados e WHERE e.sueldoBasico = :sueldoBasico")})
-public class Empleados implements Serializable {
+public class Empleados implements Serializable, Comparable<Empleados>  {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "dni")
-    private Integer dni;
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "apellido")
-    private String apellido;
+    @Column(name = "num_legajo", nullable = false)
+    private Integer numLegajo;
+    @Column(name = "nombre_apellido", length = 50)
+    private String nombreApellido;
     @Column(name = "fecha_nacimineto")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimineto;
-    @Column(name = "num_legajo")
-    private Integer numLegajo;
+    @Column(name = "dni")
+    private Integer dni;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "sueldo_basico")
     private Double sueldoBasico;
@@ -54,32 +51,24 @@ public class Empleados implements Serializable {
     public Empleados() {
     }
 
-    public Empleados(Integer dni) {
-        this.dni = dni;
+    public Empleados(Integer numLegajo) {
+        this.numLegajo = numLegajo;
     }
 
-    public Integer getDni() {
-        return dni;
+    public Integer getNumLegajo() {
+        return numLegajo;
     }
 
-    public void setDni(Integer dni) {
-        this.dni = dni;
+    public void setNumLegajo(Integer numLegajo) {
+        this.numLegajo = numLegajo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreApellido() {
+        return nombreApellido;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setNombreApellido(String nombreApellido) {
+        this.nombreApellido = nombreApellido;
     }
 
     public Date getFechaNacimineto() {
@@ -90,12 +79,12 @@ public class Empleados implements Serializable {
         this.fechaNacimineto = fechaNacimineto;
     }
 
-    public Integer getNumLegajo() {
-        return numLegajo;
+    public Integer getDni() {
+        return dni;
     }
 
-    public void setNumLegajo(Integer numLegajo) {
-        this.numLegajo = numLegajo;
+    public void setDni(Integer dni) {
+        this.dni = dni;
     }
 
     public Double getSueldoBasico() {
@@ -109,7 +98,7 @@ public class Empleados implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (dni != null ? dni.hashCode() : 0);
+        hash += (numLegajo != null ? numLegajo.hashCode() : 0);
         return hash;
     }
 
@@ -120,7 +109,7 @@ public class Empleados implements Serializable {
             return false;
         }
         Empleados other = (Empleados) object;
-        if ((this.dni == null && other.dni != null) || (this.dni != null && !this.dni.equals(other.dni))) {
+        if ((this.numLegajo == null && other.numLegajo != null) || (this.numLegajo != null && !this.numLegajo.equals(other.numLegajo))) {
             return false;
         }
         return true;
@@ -128,7 +117,12 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "Modelo.Empleados[ dni=" + dni + " ]";
+        return "Modelo.Empleados[ numLegajo=" + numLegajo + " ]";
+    }
+
+    @Override
+    public int compareTo(Empleados t) {
+        return getNombreApellido().compareTo(t.getNombreApellido());
     }
     
 }

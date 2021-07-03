@@ -24,7 +24,7 @@ import javax.persistence.criteria.Root;
 public class ProyectoJpaController implements Serializable {
 
     public ProyectoJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("com.unju_TrabajoPrecticoFinalPOO_PEREZ_MAMANI_MARTINEZ_jar_1.0PU");
+        this.emf = Persistence.createEntityManagerFactory("com.unju_TrabajoPrecticoFinalPOO_PEREZ_MAMANI_MARTINEZ_jar_1.0PU");;
     }
     private EntityManagerFactory emf = null;
 
