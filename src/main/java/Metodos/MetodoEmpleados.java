@@ -21,6 +21,7 @@ public class MetodoEmpleados {
     Empleados emple = new Empleados();
     EmpleadosJpaController ejpaC = new EmpleadosJpaController();
     SimpleDateFormat fna = new SimpleDateFormat("dd/MM/yyyy");
+    
 
     public void Insertar() {
         try {
@@ -35,8 +36,8 @@ public class MetodoEmpleados {
             scanner.nextLine();
             System.out.println("Ingrese Fecha de nacimiento (dia/mes/año)");
             String fech = scanner.nextLine();
-            Date fecha = fna.parse(fech);
-            emple.setFechaNacimineto(fecha);
+            Date fechanac = fna.parse(fech);
+            emple.setFechaNacimineto(fechanac);
             System.out.println("Ingrese Sueldo basico");
             emple.setSueldoBasico(scanner.nextDouble());
             scanner.nextLine();
@@ -271,7 +272,7 @@ public class MetodoEmpleados {
                 }
             }
             if (con == 0) {
-                System.err.println("No hay empleados que superen el slario ingresado");
+                System.err.println("No hay empleados que superen el salario ingresado");
             }
             System.out.println("+-------------------------------------------------------------------------------------------------------------+");
 

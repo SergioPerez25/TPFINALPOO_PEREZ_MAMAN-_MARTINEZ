@@ -1,6 +1,7 @@
 package Principal;
 
 import Metodos.MetodoEmpleados;
+import Metodos.MetodoProyectos;
 import java.util.Scanner;
 
 /**
@@ -93,6 +94,7 @@ public class Menus {
     }
 
     public static void menuProyactos() {
+        MetodoProyectos mp = new MetodoProyectos();
         int opp = 0;
         while (opp != 10) {
             System.out.println("+=====================================================================+");
@@ -113,31 +115,31 @@ public class Menus {
             opp = scanner.nextInt();
             switch (opp) {
                 case 1:
-
+                    mp.Agregar();
                     break;
                 case 2:
-
+                    mp.Eliminar();
                     break;
                 case 3:
-
+                    mp.Mostrartodo();
                     break;
                 case 4:
-
+                    mp.AgregarEmpleado();
                     break;
                 case 5:
-
+                    mp.QuitarEmpleado();
                     break;
                 case 6:
-
+                    mp.ListarDatosPreoyecto();
                     break;
                 case 7:
-
+                    mp.CalculoMontoTotal();
                     break;
                 case 8:
-
+                    mp.CalcularMontoDestinados();
                     break;
                 case 9:
-
+                    mp.ListarPorRangoFecha();
                     break;
                 case 10:
                     System.out.println("Saliendo del Administrador de Proyectos");

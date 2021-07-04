@@ -6,6 +6,7 @@
 package Controlador;
 
 import Controlador.exceptions.NonexistentEntityException;
+import Controlador.exceptions.PreexistingEntityException;
 import Modelo.Proyecto;
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +25,7 @@ import javax.persistence.criteria.Root;
 public class ProyectoJpaController implements Serializable {
 
     public ProyectoJpaController() {
-        this.emf = Persistence.createEntityManagerFactory("com.unju_TrabajoPrecticoFinalPOO_PEREZ_MAMANI_MARTINEZ_jar_1.0PU");;
+        this.emf = Persistence.createEntityManagerFactory("com.unju_TrabajoPrecticoFinalPOO_PEREZ_MAMANI_MARTINEZ_jar_1.0PU");
     }
     private EntityManagerFactory emf = null;
 
@@ -32,13 +33,18 @@ public class ProyectoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Proyecto proyecto) {
+    public void create(Proyecto proyecto) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(proyecto);
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findProyecto(proyecto.getCodigoProyecto()) != null) {
+                throw new PreexistingEntityException("Proyecto " + proyecto + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
