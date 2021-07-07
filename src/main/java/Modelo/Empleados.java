@@ -29,15 +29,16 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Empleados.findByNombreApellido", query = "SELECT e FROM Empleados e WHERE e.nombreApellido = :nombreApellido")
     , @NamedQuery(name = "Empleados.findByFechaNacimineto", query = "SELECT e FROM Empleados e WHERE e.fechaNacimineto = :fechaNacimineto")
     , @NamedQuery(name = "Empleados.findByDni", query = "SELECT e FROM Empleados e WHERE e.dni = :dni")
-    , @NamedQuery(name = "Empleados.findBySueldoBasico", query = "SELECT e FROM Empleados e WHERE e.sueldoBasico = :sueldoBasico")})
-public class Empleados implements Serializable, Comparable<Empleados>  {
+    , @NamedQuery(name = "Empleados.findBySueldoBasico", query = "SELECT e FROM Empleados e WHERE e.sueldoBasico = :sueldoBasico")
+    , @NamedQuery(name = "Empleados.findByCodigoProyecto", query = "SELECT e FROM Empleados e WHERE e.codigoProyecto = :codigoProyecto")})
+public class Empleados implements Serializable, Comparable<Empleados> {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "num_legajo", nullable = false)
+    @Column(name = "num_legajo")
     private Integer numLegajo;
-    @Column(name = "nombre_apellido", length = 50)
+    @Column(name = "nombre_apellido")
     private String nombreApellido;
     @Column(name = "fecha_nacimineto")
     @Temporal(TemporalType.DATE)
@@ -47,6 +48,8 @@ public class Empleados implements Serializable, Comparable<Empleados>  {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "sueldo_basico")
     private Double sueldoBasico;
+    @Column(name = "codigo_proyecto")
+    private Integer codigoProyecto;
 
     public Empleados() {
     }
@@ -95,6 +98,14 @@ public class Empleados implements Serializable, Comparable<Empleados>  {
         this.sueldoBasico = sueldoBasico;
     }
 
+    public Integer getCodigoProyecto() {
+        return codigoProyecto;
+    }
+
+    public void setCodigoProyecto(Integer codigoProyecto) {
+        this.codigoProyecto = codigoProyecto;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -119,7 +130,7 @@ public class Empleados implements Serializable, Comparable<Empleados>  {
     public String toString() {
         return "Modelo.Empleados[ numLegajo=" + numLegajo + " ]";
     }
-
+    
     @Override
     public int compareTo(Empleados t) {
         return getNombreApellido().compareTo(t.getNombreApellido());

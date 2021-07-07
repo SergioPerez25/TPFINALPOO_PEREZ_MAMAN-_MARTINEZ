@@ -29,8 +29,7 @@ import javax.persistence.TemporalType;
     , @NamedQuery(name = "Proyecto.findByNombreProyecto", query = "SELECT p FROM Proyecto p WHERE p.nombreProyecto = :nombreProyecto")
     , @NamedQuery(name = "Proyecto.findByFechaInicio", query = "SELECT p FROM Proyecto p WHERE p.fechaInicio = :fechaInicio")
     , @NamedQuery(name = "Proyecto.findByFechaFinalizacion", query = "SELECT p FROM Proyecto p WHERE p.fechaFinalizacion = :fechaFinalizacion")
-    , @NamedQuery(name = "Proyecto.findByMontoProsupuestado", query = "SELECT p FROM Proyecto p WHERE p.montoProsupuestado = :montoProsupuestado")
-    , @NamedQuery(name = "Proyecto.findByNumLegajo", query = "SELECT p FROM Proyecto p WHERE p.numLegajo = :numLegajo")})
+    , @NamedQuery(name = "Proyecto.findByMontoProsupuestado", query = "SELECT p FROM Proyecto p WHERE p.montoProsupuestado = :montoProsupuestado")})
 public class Proyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,8 +48,6 @@ public class Proyecto implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "monto_prosupuestado")
     private Double montoProsupuestado;
-    @Column(name = "num_legajo")
-    private Integer numLegajo;
 
     public Proyecto() {
     }
@@ -97,14 +94,6 @@ public class Proyecto implements Serializable {
 
     public void setMontoProsupuestado(Double montoProsupuestado) {
         this.montoProsupuestado = montoProsupuestado;
-    }
-
-    public Integer getNumLegajo() {
-        return numLegajo;
-    }
-
-    public void setNumLegajo(Integer numLegajo) {
-        this.numLegajo = numLegajo;
     }
 
     @Override

@@ -27,6 +27,7 @@ public class EmpleadosJpaController implements Serializable {
     public EmpleadosJpaController() {
         this.emf = Persistence.createEntityManagerFactory("com.unju_TrabajoPrecticoFinalPOO_PEREZ_MAMANI_MARTINEZ_jar_1.0PU");
     }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

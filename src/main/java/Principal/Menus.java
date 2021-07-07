@@ -136,7 +136,8 @@ public class Menus {
                     mp.CalculoMontoTotal();
                     break;
                 case 8:
-                    mp.CalcularMontoDestinados();
+                    
+                    System.out.println("El monto individual de cada empleado es de: $"+mp.calcularMontoIndividual());
                     break;
                 case 9:
                     mp.ListarPorRangoFecha();

@@ -6,6 +6,7 @@ import Controlador.exceptions.NonexistentEntityException;
 import Modelo.Empleados;
 import Modelo.Proyecto;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,6 @@ public class MetodoProyectos {
             System.out.println("Ingrese el monto prosupuestado");
             pro.setMontoProsupuestado(scanner.nextDouble());
             scanner.nextLine();
-            pro.setNumLegajo(0);
             System.out.println("+======================================================+");
             pjpaC.create(pro);
             System.out.println("Agregado correctamente");
@@ -129,8 +129,9 @@ public class MetodoProyectos {
                     for (Empleados empleados : empl) {
                         if (lega == empleados.getNumLegajo()) {
                             cont++;
-                            proyecto.setNumLegajo(lega);
-                            pjpaC.edit(proyecto);
+                            empleados.setNumLegajo(lega);
+                            empleados.setCodigoProyecto(cod);
+                            ejpaC.edit(empleados);
                             System.out.println("Se agrego correctamente");
                         }
                     }
@@ -150,7 +151,7 @@ public class MetodoProyectos {
     }
 
     public void QuitarEmpleado() {
-         try {
+        try {
             Empleados emple = new Empleados();
             EmpleadosJpaController ejpaC = new EmpleadosJpaController();
             List<Empleados> empl = ejpaC.findEmpleadosEntities();
@@ -158,7 +159,7 @@ public class MetodoProyectos {
             List<Proyecto> proy = pjpaC.findProyectoEntities();
             MetodoEmpleados emp = new MetodoEmpleados();
             Mostrartodo();
-            int cod = 0, con = 0, cont = 0;
+            int cod = 0, con = 0, cont = 0, lega = 0;
             System.out.println("+======================================================+");
             System.out.println("+ Ingrese codigo de proyecto para quitar a un Empleado +");
             System.out.println("+======================================================+");
@@ -168,17 +169,24 @@ public class MetodoProyectos {
             for (Proyecto proyecto : proy) {
                 if (cod == proyecto.getCodigoProyecto()) {
                     con++;
-                    if (0<proyecto.getNumLegajo()) {
-                    System.out.println("+=================================================+");
-                    System.out.println("+ El empleado se quito correctamente del proyecto +");
-                    System.out.println("+=================================================+");
-                    proyecto.setNumLegajo(0);
-                    pjpaC.edit(proyecto); 
-                    }else{
-                        System.out.println("No se puede quitar porque el proyecto no tiene empleados");
+                    System.out.println("+===============================================================+");
+                    System.out.println("+ Ingrese el numero de legajo para quitar empleado del proyecto +");
+                    System.out.println("+===============================================================+");
+                    lega = modi.nextInt();
+                    modi.nextLine();
+                    for (Empleados empleados : empl) {
+                        if (lega == empleados.getNumLegajo() && cod == empleados.getCodigoProyecto()) {
+                            cont++;
+                            empleados.setCodigoProyecto(0);
+                            ejpaC.edit(empleados);
+                            System.out.println("Se quito correctamente");
+                        }
                     }
-                    
                 }
+
+            }
+            if (cont == 0) {
+                System.out.println("No se puede quitar porque el proyecto no tiene ese empleado");
             }
             if (con == 0) {
                 System.out.println("El codigo ingresado no existe");
@@ -203,38 +211,41 @@ public class MetodoProyectos {
             System.out.println("+==============================================+");
             cod = modi.nextInt();
             modi.nextLine();
-            System.out.println("+-------------------------------------------------------------------------------------------------------------------+");
-            System.out.println("|                                            Datos de Proyecto                                                      +");
-            System.out.println("+-------------------------------------------------------------------------------------------------------------------+");
-            System.out.println("|  Codigo  |    Nombre proyecto    |  Fecha de inicio  |  Fecha de finalizacion  |  Monto prosupuestado | N° Legajo |");
-            System.out.println("+-------------------------------------------------------------------------------------------------------------------+");
-           
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("|                                                    Datos de Proyecto                                                                         +");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("|  Codigo  |    Nombre proyecto    |  Fecha de inicio  |  Fecha de finalizacion  |  Monto prosupuestado | N° Legajo |     Nombre y Apellido    |");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
             for (Proyecto proyecto : proy) {
                 if (cod == proyecto.getCodigoProyecto()) {
-                     aa++;
-                     
-                    if (0<proyecto.getNumLegajo()) {
-                      con++; 
-                     entro++;
+                    aa++;
+                    for (Empleados empleados : emple) {
+                        if (cod == empleados.getCodigoProyecto()) {
+                            con++;
+                            entro++;
+                            System.out.printf("|    %-4s  |      %-15s  |    %-10s     |        %-10s       |       %-12s   |     %-4s  |      %-15s     |\n",
+                                    empleados.getCodigoProyecto(),
+                                    proyecto.getNombreProyecto(),
+                                    fechapr.format(proyecto.getFechaInicio()),
+                                    fechapr.format(proyecto.getFechaFinalizacion()),
+                                    proyecto.getMontoProsupuestado(),
+                                    empleados.getNumLegajo(),
+                                    empleados.getNombreApellido());
+                        }
                     }
-                    System.out.printf("|    %-4s  |      %-15s  |    %-10s     |        %-10s       |       %-12s   |     %-4s  |\n",
-                            proyecto.getCodigoProyecto(),
-                            proyecto.getNombreProyecto(),
-                            fechapr.format(proyecto.getFechaInicio()),
-                            fechapr.format(proyecto.getFechaFinalizacion()),
-                            proyecto.getMontoProsupuestado(),
-                            proyecto.getNumLegajo());
-                    System.out.println("| Total de empleados en el proyecto: " + con+"                                                                              |");
                 }
+
             }
-              System.out.println("+-------------------------------------------------------------------------------------------------------------------+");
-           
             if (aa == 0) {
                 System.out.println("El codigo de proyecto que ingreso no existe");
-
-            } if(entro==0 && aa>0) {
+            }
+            if (entro == 0 && aa > 0) {
                 System.err.println("El Proyecto no tiene empleados");
             }
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("| Total de empleados en el proyecto:      " + con + "                                                                                                    |");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+
         } catch (Exception e) {
             System.out.println("erro: " + e.getMessage());
         }
@@ -255,12 +266,57 @@ public class MetodoProyectos {
         System.out.println("+=========================================+\n");
     }
 
-    public void CalcularMontoDestinados() {
+    public float calcularMontoIndividual() {
+        float montoind = 0;
+        int cod = 0, con = 0;
+        try {
+            Scanner modi = new Scanner(System.in);
+            List<Proyecto> proy = pjpaC.findProyectoEntities();
+            EmpleadosJpaController ejpaC = new EmpleadosJpaController();
+            List<Empleados> emple = ejpaC.findEmpleadosEntities();
+            MetodoEmpleados emp = new MetodoEmpleados();
+            Mostrartodo();
+            System.out.println("+==========================================================+");
+            System.out.println("+ Ingrese codigo de proyecto para listar monto de empleado +");
+            System.out.println("+==========================================================+");
+            cod = modi.nextInt();
+            modi.nextLine();
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("|                                                    Datos de Proyecto                                                                         +");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("|  Codigo  |    Nombre proyecto    |  Fecha de inicio  |  Fecha de finalizacion  |  Monto prosupuestado | N° Legajo |     Nombre y Apellido    |");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            for (Proyecto proyecto : proy) {
+                if (cod == proyecto.getCodigoProyecto()) {
+                    for (Empleados empleados : emple) {
+                        if (cod == empleados.getCodigoProyecto()) {
+                            con++;
+                            montoind = (float) (proyecto.getMontoProsupuestado() / con);
+                            System.out.printf("|    %-4s  |      %-15s  |    %-10s     |        %-10s       |       %-12s   |     %-4s  |      %-15s     |\n",
+                                    empleados.getCodigoProyecto(),
+                                    proyecto.getNombreProyecto(),
+                                    fechapr.format(proyecto.getFechaInicio()),
+                                    fechapr.format(proyecto.getFechaFinalizacion()),
+                                    proyecto.getMontoProsupuestado(),
+                                    empleados.getNumLegajo(),
+                                    empleados.getNombreApellido());
+                        }
+                    }
+                }
+            }
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
+            System.out.println("| Total de empleados en el proyecto:      " + con + "                                                                                                    |");
+            System.out.println("+----------------------------------------------------------------------------------------------------------------------------------------------+");
 
+        } catch (Exception e) {
+            System.out.println("erro: " + e.getMessage());
+        }
+        return montoind;
     }
 
     public void ListarPorRangoFecha() {
         List<Proyecto> proy = pjpaC.findProyectoEntities();
+
         try {
             System.out.println("Ingrese fecha de inicio del proyecto (dia/mes/año)");
             String fechain = scanner.nextLine();
@@ -268,11 +324,14 @@ public class MetodoProyectos {
             System.out.println("Ingrese fecha de finalisacion del proyecto (dia/mes/año)");
             String fechafin = scanner.nextLine();
             Date fechaf = fechapr.parse(fechafin);
-
+            System.out.println("+-------------------------------------------------------------------------------------------------------+");
+            System.out.println("|                                       Datos de Proyecto                                               +");
+            System.out.println("+-------------------------------------------------------------------------------------------------------+");
+            System.out.println("|  Codigo  |    Nombre proyecto    |  Fecha de inicio  |  Fecha de finalizacion  |  Monto prosupuestado |");
+            System.out.println("+-------------------------------------------------------------------------------------------------------+");
             for (Proyecto proyecto : proy) {
-                if (fechain != fechapr.format(proyecto.getFechaInicio()) && fechafin != fechapr.format(proyecto.getFechaFinalizacion())) {
-                    System.out.printf("|    %-4s  |      %-15s  |    %-10s     |        %-fechain!=fechapr.format(proyecto.getFechaInicio()) && fechafin!=fechapr.format(proyecto.getFechaFinalizacion())) {\n"
-                            + "                System.out.10s       |       %-12s   |\n",
+            if(fech.compareTo(proyecto.getFechaInicio())<=0 && fechaf.compareTo(proyecto.getFechaFinalizacion()) >=0){    
+             System.out.printf("|    %-4s  |      %-15s  |    %-10s     |        %-10s       |       %-12s   |\n",
                             proyecto.getCodigoProyecto(),
                             proyecto.getNombreProyecto(),
                             fechapr.format(proyecto.getFechaInicio()),
@@ -280,8 +339,9 @@ public class MetodoProyectos {
                             proyecto.getMontoProsupuestado());
                 }
             }
+            System.out.println("+-------------------------------------------------------------------------------------------------------+");
         } catch (Exception e) {
+            System.out.println("erro: " + e.getMessage());
         }
-
     }
 }

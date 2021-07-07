@@ -41,6 +41,7 @@ public class MetodoEmpleados {
             System.out.println("Ingrese Sueldo basico");
             emple.setSueldoBasico(scanner.nextDouble());
             scanner.nextLine();
+            emple.setCodigoProyecto(0);
             ejpaC.create(emple);
             System.out.println("+========================================+");
             System.out.println("Agregado correctamente");
